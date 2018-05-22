@@ -1,0 +1,29 @@
+- hosts: localhost
+
+  tasks:
+  - name: Install System Packages
+    yum:
+     name: "{{item}}"
+     state: present
+
+    with_items:
+    - 'binutils'
+    - 'compat-libcap1'
+    - 'gcc'
+    - 'gcc-c++'
+    - 'glibc-devel'
+    - 'ksh'
+    - 'libgcc'
+    - 'make'
+    - 'sysstat'
+    - 'unzip'
+    - 'tar'
+    - 'glibc'
+    - 'libaio'
+    - 'libaio-devel'
+    - 'libstdc++'
+    - 'libstdc++-devel'
+    - 'compat-libstdc++-33'
+    - 'rlwrap'
+    become: yes
+    become_user: root

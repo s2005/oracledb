@@ -1,0 +1,25 @@
+- hosts: localhost
+
+  vars: 
+    oracle_user: oracle
+    oracle_group: oinstall
+    oracle_base: /opt/oracle
+    oracle_dirs:
+      - '{{ oracle_base }}'
+      - '{{ oracle_base }}/product'
+      - '{{ oracle_base }}/oraInventory'
+    oracle_soft_nproc: 2047
+    oracle_hard_nproc: 16384
+    oracle_soft_nofile: 4096
+    oracle_hard_nofile: 65536
+    oracle_soft_stack: 10240
+
+  tasks: 
+  - name: Modify ulimits
+    template:
+      backup: yes
+      src: templates/ulimits.j2
+      dest: /etc/security/limits.d/oracle_limits.conf
+    become: yes
+    become_user: root
+

@@ -1,0 +1,36 @@
+- hosts: localhost
+
+  vars: 
+    oracle_user: oracle
+    oracle_group: oinstall
+    oracle_base: /opt/oracle
+    install_unpacked: /opt/install/unpacked/
+    oracle_dirs:
+      - '{{ oracle_base }}'
+      - '{{ oracle_base }}/product'
+      - '{{ oracle_base }}/oraInventory'
+
+  tasks: 
+  - name: Create unpacked folder
+    file:
+      owner: "{{ oracle_user }}"
+      group: "{{ oracle_group }}"
+      path: "{{ install_unpacked }}"
+      state: directory
+    become: yes
+    become_user: root
+   
+  - name: Unarchive
+    unarchive:
+      remote_src: yes
+      src: '{{ item.name }}'
+      dest: '{{ install_unpacked }}'
+      owner: '{{ oracle_user }}'
+      group: '{{ oracle_group }}'
+      creates: '{{ item.creates }}'
+    with_items:
+      - { name: '/opt/install/linuxamd64_12102_database_1of2.zip', creates: '/opt/install/database/runInstaller' }   
+      - { name: '/opt/install/linuxamd64_12102_database_2of2.zip', creates: '/opt/install/database/stage/Components/oracle.ctx' }
+    become: yes
+    become_user: root
+

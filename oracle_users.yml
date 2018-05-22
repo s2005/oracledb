@@ -1,0 +1,22 @@
+- hosts: localhost
+
+  tasks:
+  - name: Create Groups
+    group:
+      gid: "{{ item.id }}"
+      name: "{{ item.name }}"
+    with_items:
+      - { name: oinstall, id: 710 }
+      - { name: dba, id: 720 }
+    become: yes
+    become_user: root
+
+  - name: Create Users
+    user: 
+      name: oracle
+      group: oinstall
+      groups: dba
+      uid: 500
+    become: yes
+    become_user: root
+    
